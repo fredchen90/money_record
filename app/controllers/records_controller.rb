@@ -3,15 +3,16 @@ class RecordsController < ApplicationController
 	before_action :authenticate_user!
 
 	def index
-		@records = Record.all
+		@records = current_user_records
 	end
 
-	def new
+	def new	
 		@record = Record.new
 	end
 
 	def create
 		@record = Record.new(record_params)
+		@record.user_id = current_user.id
 		if @record.save
 			redirect_to records_path
 		else
